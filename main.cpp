@@ -145,8 +145,72 @@ bool dfs(int r, int c,
      *      update parents
      *      update visited
      *      return dfs(r and c moved up/down/left/right... everything else the same)
+     *      --> NVM do not do return-- it will terminate on first path
+     *      --> just need the fails to be ignored and if cascading ends without a return true, return false
      * }
      */
+
+    int up = r + dr[0];
+    int down = r + dr[2];
+    int left = c + dc[3];
+    int right = c + dc[1];
+
+    if (r == exit_r && c == exit_c) {
+        cout << "Entered if #1" << endl;
+        return true;
+    }
+
+    if ((up < 0 || visited[up][c] == true || maze[up][c] == 1) &&
+        (down >= maze.size() || visited[down][c] == true || maze[down][c] == 1) &&
+        (left < 0 || visited[r][left] == true || maze[r][left] == 1) &&
+        (right >= maze[0].size() || visited[r][right] == true || maze[r][right] == 1)) {
+        cout << "Entered if #2. Parent_r = " << parent_r[r][c] << " and parent_c = " << parent_c[r][c] << endl;
+        visited[r][c] = true;
+        return false;
+        //return dfs (parent_r[r][c], parent_c[r][c], maze, visited, parent_r, parent_c, exit_r, exit_c);
+    }
+
+    if (up > -1 && maze[up][c] == 0 && !visited[up][c]) {
+        cout << "Entered if #3. Up = " << up << endl;
+        visited[r][c] = true;
+        parent_r[up][c] = r;
+        parent_c[up][c] = c;
+        if (dfs(up, c, maze, visited, parent_r, parent_c, exit_r, exit_c)) {
+            return true;
+        }
+    }
+
+    if (down < maze.size() && maze[down][c] == 0 && !visited[down][c]) {
+        cout << "Entered if #4. Down = " << down << endl;
+        visited[r][c] = true;
+        parent_r[down][c] = r;
+        parent_c[down][c] = c;
+        if (dfs(down, c, maze, visited, parent_r, parent_c, exit_r, exit_c)) {
+            return true;
+        }
+    }
+
+    if (left > -1 && maze[r][left] == 0 && !visited[r][left]) {
+        cout << "Entered if #5. Left = " << left << endl;
+        visited[r][c] = true;
+        parent_r[r][left] = r;
+        parent_c[r][left] = c;
+        if (dfs(r, left, maze, visited, parent_r, parent_c, exit_r, exit_c)) {
+            return true;
+        }
+    }
+
+    if (right < maze[0].size() && maze[r][right] == 0 && !visited[r][right]) {
+        cout << "Entered if #6. Right = " << right << endl;
+        visited[r][c] = true;
+        parent_r[r][right] = r;
+        parent_c[r][right] = c;
+        if (dfs(r, right, maze, visited, parent_r, parent_c, exit_r, exit_c)) {
+            return true;
+        }
+    }
+
+    return false; // cascading ended without a success
  }
 
 
@@ -189,17 +253,17 @@ int main() {
     // STUDENT WORK:
     // Call your DFS, track visited, and fill parent_r and parent_c
     // ------------------------------------------------------
-    // bool found = dfs(ent_r, ent_c, maze, visited, parent_r, parent_c, exit_r, exit_c);
+     bool found = dfs(ent_r, ent_c, maze, visited, parent_r, parent_c, exit_r, exit_c);
 
     // ------------------------------------------------------
     // STUDENT WORK:
     // If found, print the path
     // ------------------------------------------------------
-    // if (found) {
-    //     printPath(exitcell, parent_r, parent_c, ent_r, ent_c);
-    // } else {
-    //     cout << "\nNo path exists.\n";
-    // }
+     if (found) {
+         printPath(exitcell, parent_r, parent_c, ent_r, ent_c);
+     } else {
+         cout << "\nNo path exists.\n";
+     }
 
     return 0;
 }
