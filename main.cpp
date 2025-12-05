@@ -128,7 +128,25 @@ bool dfs(int r, int c,
         vector<vector<int>>& parent_r,
         vector<vector<int>>& parent_c,
         int exit_r, int exit_c) {
-//     // Your code here
+    // Parent tracking arrays: will create a 'history' of the DFS path--
+    // like breadcrumbs that tell you where you came from before putting them down
+    // r = ent_r, c = ent_c
+
+    // r and c is your starting location...
+
+    /* if (r, c == exit) {
+     *      return true
+     * }
+     * if (up/down/left/right are visited OR walls OR out of bounds) {
+     *      return false
+     * }
+     *
+     * if (upward/downward/left/right: unvisited AND open AND not out of bounds) { [x4]
+     *      update parents
+     *      update visited
+     *      return dfs(r and c moved up/down/left/right... everything else the same)
+     * }
+     */
  }
 
 
