@@ -2,6 +2,8 @@
 // Created by Manju Muralidharan on 11/22/25.
 //
 
+// Comments added by Ashley Young on 12/4/25 to better understand the code before manipulation
+
 #include <iostream>
 #include <vector>
 #include <cstdlib>
@@ -34,10 +36,13 @@ pair<int,int> chooseBoundaryCell(const vector<vector<int>>& maze) {
     int N = maze.size();
     int M = maze[0].size();
 
+    // This will execute until the program reaches an empty space-- which could be in one iteration
     while (true) {
-        int side = rand() % 4;
+        int side = rand() % 4; // Gives random number from 0 to 3
         int r, c;
 
+        // Depending on what was generated, check the top or bottom row for a random column
+        // OR left or right column for a random row
         if (side == 0) {          // top row
             r = 0;
             c = rand() % M;
@@ -117,9 +122,14 @@ void printPath(pair<int,int> exitcell,
 // STUDENTS IMPLEMENT DFS HERE
 // Add arguments, return type, and logic
 // ----------------------------------------------------------
-// bool dfs(……) {
+bool dfs(int r, int c,
+        const vector<vector<int>>& maze,
+        vector<vector<bool>>& visited,
+        vector<vector<int>>& parent_r,
+        vector<vector<int>>& parent_c,
+        int exit_r, int exit_c) {
 //     // Your code here
-// }
+ }
 
 
 // ----------------------------------------------------------
@@ -131,17 +141,19 @@ int main() {
     cout << "Enter maze dimensions N M: ";
     cin >> N >> M;
 
-    vector<vector<int>> maze(N, vector<int>(M));
-    generateMaze(maze, N, M);
+    vector<vector<int>> maze(N, vector<int>(M)); // Creates a big box of 0's that's N x M
+    generateMaze(maze, N, M); // Fills the box with 0s and 1s randomly
 
     // Pick entrance and exit
     pair<int,int> entrance = chooseBoundaryCell(maze);
     pair<int,int> exitcell = chooseBoundaryCell(maze);
 
+    // Check to make sure that the entrance is not the same as the exit
     while (exitcell == entrance) {
         exitcell = chooseBoundaryCell(maze);
     }
 
+    // Splitting the two pair variables into 4 separate variables
     int ent_r = entrance.first;
     int ent_c = entrance.second;
     int exit_r = exitcell.first;
