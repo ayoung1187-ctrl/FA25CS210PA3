@@ -3,6 +3,7 @@
 //
 
 // Comments added by Ashley Young on 12/4/25 to better understand the code before manipulation
+// Code updated by Ashley Young on 12/5/25
 
 #include <iostream>
 #include <vector>
@@ -128,50 +129,28 @@ bool dfs(int r, int c,
         vector<vector<int>>& parent_r,
         vector<vector<int>>& parent_c,
         int exit_r, int exit_c) {
-    // Parent tracking arrays: will create a 'history' of the DFS path--
-    // like breadcrumbs that tell you where you came from before putting them down
-    // r = ent_r, c = ent_c
-
-    // r and c is your starting location...
-
-    /* if (r, c == exit) {
-     *      return true
-     * }
-     * if (up/down/left/right are visited OR walls OR out of bounds) {
-     *      return false
-     * }
-     *
-     * if (upward/downward/left/right: unvisited AND open AND not out of bounds) { [x4]
-     *      update parents
-     *      update visited
-     *      return dfs(r and c moved up/down/left/right... everything else the same)
-     *      --> NVM do not do return-- it will terminate on first path
-     *      --> just need the fails to be ignored and if cascading ends without a return true, return false
-     * }
-     */
-
+    // Direction variables
     int up = r + dr[0];
     int down = r + dr[2];
     int left = c + dc[3];
     int right = c + dc[1];
 
+    // If currently at exit, return true
     if (r == exit_r && c == exit_c) {
-        cout << "Entered if #1" << endl;
         return true;
     }
 
+    // If surrounded by immovable terrain, return false
     if ((up < 0 || visited[up][c] == true || maze[up][c] == 1) &&
         (down >= maze.size() || visited[down][c] == true || maze[down][c] == 1) &&
         (left < 0 || visited[r][left] == true || maze[r][left] == 1) &&
         (right >= maze[0].size() || visited[r][right] == true || maze[r][right] == 1)) {
-        cout << "Entered if #2. Parent_r = " << parent_r[r][c] << " and parent_c = " << parent_c[r][c] << endl;
         visited[r][c] = true;
         return false;
-        //return dfs (parent_r[r][c], parent_c[r][c], maze, visited, parent_r, parent_c, exit_r, exit_c);
     }
 
+    // Recursion: move up, down, left, or right if possible. Will visit all possible nodes until finding the exit
     if (up > -1 && maze[up][c] == 0 && !visited[up][c]) {
-        cout << "Entered if #3. Up = " << up << endl;
         visited[r][c] = true;
         parent_r[up][c] = r;
         parent_c[up][c] = c;
@@ -181,7 +160,6 @@ bool dfs(int r, int c,
     }
 
     if (down < maze.size() && maze[down][c] == 0 && !visited[down][c]) {
-        cout << "Entered if #4. Down = " << down << endl;
         visited[r][c] = true;
         parent_r[down][c] = r;
         parent_c[down][c] = c;
@@ -191,7 +169,6 @@ bool dfs(int r, int c,
     }
 
     if (left > -1 && maze[r][left] == 0 && !visited[r][left]) {
-        cout << "Entered if #5. Left = " << left << endl;
         visited[r][c] = true;
         parent_r[r][left] = r;
         parent_c[r][left] = c;
@@ -201,7 +178,6 @@ bool dfs(int r, int c,
     }
 
     if (right < maze[0].size() && maze[r][right] == 0 && !visited[r][right]) {
-        cout << "Entered if #6. Right = " << right << endl;
         visited[r][c] = true;
         parent_r[r][right] = r;
         parent_c[r][right] = c;
